@@ -1,0 +1,153 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CarManagement.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="CarManagement.Pages.Cars"
+      mc:Ignorable="d" 
+      d:DesignHeight="650" d:DesignWidth="1000" Loaded="Page_Loaded"
+      Title="Cars">
+
+    <Grid Background="#e9ecef">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Background="white" Grid.Row="0" Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <!-- Cột đầu tiên chiếm không gian còn lại -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Cột thứ hai cho Button -->
+                </Grid.ColumnDefinitions>
+
+                <!-- TextBlock nằm ở cột đầu tiên -->
+                <TextBlock Text="Car Management" FontSize="20" VerticalAlignment="Center" FontWeight="Bold" />
+
+                <!-- Button nằm ở cột thứ hai và căn phải -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBox
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        x:Name="SearchTextBox" Width="118">
+                        <materialDesign:HintAssist.Hint>
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Margin="-2 0 0 0">
+                                <materialDesign:PackIcon
+                                Kind="Search" />
+                                <TextBlock>
+                                    Search
+                                </TextBlock>
+                            </StackPanel>
+                        </materialDesign:HintAssist.Hint>
+                    </TextBox>
+                    <Button x:Name="AddButton" Padding="10,5" Margin="10,0" Click="AddButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Car" Width="20" Height="20" Margin="0,0,5,0"/>
+                            <TextBlock Text="Add new car" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button  Content="Branch" Padding="10,5" Margin="0,0"/>
+
+                </StackPanel>
+            </Grid>
+        </Border>
+
+         <!-- Content Section -->
+        <Border Background="White" Grid.Row="1" Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Title for All Branch Section -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Row for All Branch Section -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Title for List of Car Cards Section -->
+                    <RowDefinition Height="*"/>
+                    <!-- Row for Scrollable Car Cards Section -->
+                </Grid.RowDefinitions>
+
+                <!-- Title for All Branch Section -->
+                <TextBlock Text="All Branches" FontSize="18" FontWeight="Bold" Margin="0,0,0,5" Grid.Row="0" HorizontalAlignment="Left"/>
+
+                <!-- All Branch Section -->
+                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding CarBrands}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+                                    <Image Source="{Binding BranchLogo}" Width="50" Height="50" />
+                                    <TextBlock Text="{Binding BranchName}" HorizontalAlignment="Center" FontWeight="Bold"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- Title for List of Car Cards Section -->
+                <TextBlock Text="Available Cars" FontSize="18" FontWeight="Bold" Margin="0,10,0,5" Grid.Row="2" HorizontalAlignment="Left"/>
+
+                <!-- List of Car Cards Section -->
+                <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl>
+                        <ItemsControl.ItemsPanel>
+                            <!-- Sử dụng WrapPanel với số lượng cột tối đa là 4 -->
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" ItemWidth="200" ItemHeight="300" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <!-- Card Container -->
+                                <Border BorderBrush="Gray" BorderThickness="1" Margin="10" Padding="10" CornerRadius="5" Width="200" Height="250">
+                                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                        <!-- Hình ảnh phía trên -->
+                                        <Image Source="car_image.png" Width="150" Height="100" Margin="0,0,0,10" />
+
+                                        <!-- Thông tin xe bên dưới -->
+                                        <TextBlock Text="Car Model" FontSize="16" FontWeight="Bold" TextAlignment="Center" />
+                                        <TextBlock Text="Description of the car goes here." FontSize="14" TextAlignment="Center" />
+                                        <TextBlock Text="Price: $20,000" FontSize="14" Foreground="Green" TextAlignment="Center" />
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                                            <Button Content="Edit" Margin="0,0,6,0" Click="EditButton_Click" Tag="{Binding}"/>
+                                            <Button Content="Delete" Margin="6, 0,0, 0" Click="DeleteButton_Click" Tag="{Binding}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                        <!-- Dữ liệu mẫu - thêm nhiều Card khác vào đây -->
+                        <ItemsControl.Items>
+                            <!-- Mỗi mục trong danh sách sẽ là một Card -->
+                            <Border BorderBrush="Gray" BorderThickness="1" Margin="10" Padding="10" CornerRadius="5" Width="179" Height="234">
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                    <Image Source="car_image.png" Width="157" Height="100" Margin="0,0,0,10" />
+                                    <TextBlock Text="Car Model" FontSize="16" FontWeight="Bold" TextAlignment="Center" />
+                                    <TextBlock Text="Description of the car goes here." FontSize="14" TextAlignment="Center" />
+                                    <TextBlock Text="Price: $20,000" FontSize="14" Foreground="Green" TextAlignment="Center" />
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                                        <Button Content="Edit" Margin="0,0,6,0" Click="EditButton_Click" Tag="{Binding}"/>
+                                        <Button Content="Delete" Margin="6, 0,0, 0" Click="DeleteButton_Click" Tag="{Binding}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Thêm các Border khác nếu muốn -->
+                        </ItemsControl.Items>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+    </Grid>
+
+</Page>

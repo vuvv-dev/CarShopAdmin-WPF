@@ -1,0 +1,35 @@
+<ResourceDictionary xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:CarManagement">
+    
+    <Style TargetType="{x:Type local:NavigationButton}">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:NavigationButton}">
+                    <Border x:Name="back"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}"
+                            >
+                        <ListBoxItem x:Name="text" Content="{TemplateBinding Text}"></ListBoxItem>
+                    </Border>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="back" Value="#d0ebff"/>
+                            <Setter Property="Foreground" TargetName="text" Value="#E5006DFF"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" TargetName="back" Value="#d0ebff"/>
+                            <Setter Property="Foreground" TargetName="text" Value="#E5006DFF"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

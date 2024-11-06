@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="CarManagement.Dialogs.AddNewCarDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:CarManagement.Dialogs"
+             mc:Ignorable="d" Width="491"
+             >
+    <StackPanel Margin="16">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="Car Name" Margin="0,0,0,5"/>
+                <TextBox x:Name="CarNameTextBox" Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Car Code" Margin="0,0,0,5"/>
+                <TextBox x:Name="CarCodeTextBox" Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Description" Margin="0,0,0,5"/>
+                <TextBox x:Name="CarDescriptionTextBox" Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Made In Date" Margin="0,0,0,5"/>
+                <TextBox x:Name="MadeInDateTextBox" Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Color" Margin="0,0,0,5"/>
+                <TextBox x:Name="ColorTextBox" Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Car Price" Margin="0,0,0,5"/>
+                <TextBox x:Name="CarPriceTextBox" Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Storage Amount" Margin="0,0,0,5"/>
+                <TextBox x:Name="StorageAmountTextBox" Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                <TextBlock Text="Select Branch" Margin="0,10,0,5"/>
+                <ComboBox x:Name="BranchComboBox" Style="{DynamicResource MaterialDesignComboBox}" Margin="0,0,0,10" 
+                          DisplayMemberPath="Name" SelectedValuePath="Id" 
+                          ItemsSource="{Binding Branches}"/>
+
+                <TextBlock Text="Select Status" Margin="0,10,0,5"/>
+                <ComboBox x:Name="StatusComboBox" Style="{DynamicResource MaterialDesignComboBox}" Margin="0,0,0,10" 
+                          DisplayMemberPath="Name" SelectedValuePath="Id" 
+                          ItemsSource="{Binding Statuses}"/>
+
+                <TextBlock Text="Select Sample" Margin="0,10,0,5"/>
+                <ComboBox x:Name="SampleComboBox" Style="{DynamicResource MaterialDesignComboBox}" Margin="0,0,0,10" 
+                          DisplayMemberPath="Name" SelectedValuePath="Id" 
+                          ItemsSource="{Binding Samples}"/>
+                <TextBlock Text="Car Image" Margin="0,10,0,5"/>
+                <StackPanel Orientation="Vertical">
+                    <Button Content="Choose Image"
+                            Style="{DynamicResource MaterialDesignRaisedButton}" 
+                            Click="ChooseImageButton_Click"/>
+                    <Image x:Name="CarImagePreview" Width="200" Height="200" 
+                           Margin="0,0,0,10" 
+                           Stretch="Uniform" 
+                           Visibility="Collapsed"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <!-- StackPanel for buttons outside the grid -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+           
+            <Button Content="Cancel" Width="75" Margin="0,0,5,0"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    Click="CancelButton_Click"/>
+            <Button Content="Add" Width="75" Margin="0,0,0,0" 
+         Style="{DynamicResource MaterialDesignRaisedButton}"
+         Click="AddButton_Click"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>
