@@ -32,5 +32,6 @@ namespace CarManagement
             }
         }
 
+        private void navframe_Navigated(object sender, NavigationEventArgs e) { }
     }
 }

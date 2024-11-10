@@ -22,10 +22,11 @@ using Microsoft.Win32;
 namespace CarManagement.Dialogs
 {
     /// <summary>
-    /// Interaction logic for AddNewCarDialog.xaml
+    /// Interaction logic for UpdateCarDialog.xaml
     /// </summary>
-    public partial class AddNewCarDialog : UserControl, INotifyPropertyChanged
+    public partial class UpdateCarDialog : UserControl, INotifyPropertyChanged
     {
+        public Car _car;
         private ObservableCollection<CarSample> _samples;
         private ObservableCollection<CarBranch> _branches;
         private ObservableCollection<CarStatus> _statuses;
@@ -37,6 +38,16 @@ namespace CarManagement.Dialogs
             {
                 _selectedColorHex = value;
                 OnPropertyChanged(nameof(SelectedColorHex));
+            }
+        }
+
+        public Car Car
+        {
+            get => _car;
+            set
+            {
+                _car = value;
+                OnPropertyChanged(nameof(Car));
             }
         }
 
@@ -56,7 +67,7 @@ namespace CarManagement.Dialogs
             set
             {
                 _branches = value;
-                OnPropertyChanged(nameof(Branches));
+                OnPropertyChanged(nameof(Branches));    
             }
         }
 
@@ -81,27 +92,27 @@ namespace CarManagement.Dialogs
 
         private readonly CarService _carService;
 
-        public AddNewCarDialog()
+        public UpdateCarDialog(Car car)
         {
-            InitializeComponent();
             _carSampleServices = new CarSampleServices();
             _carBranchServices = new CarBranchServices();
             _carStatusServices = new CarStatusServices();
             _carService = new CarService();
-
-            LoadData();
-            DataContext = this;
+            Car = car;
+            InitializeComponent();
+            this.DataContext = this;
+            LoadInit();
         }
 
-        private void LoadData()
+        private void LoadInit()
         {
-            // Fetch and populate data for Samples, Branches, and Statuses
             Samples = new ObservableCollection<CarSample>(_carSampleServices.GetAllCarSamples());
             Branches = new ObservableCollection<CarBranch>(_carBranchServices.GetAllCarBranches());
             Statuses = new ObservableCollection<CarStatus>(_carStatusServices.GetAllCarStatuses());
+            SelectedColorHex = _car.Color;
         }
 
-        private async void AddButton_Click(object sender, RoutedEventArgs e)
+        private async void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -236,11 +247,11 @@ namespace CarManagement.Dialogs
                         : 0,
                 };
 
-                var isAdded = await _carService.AddNewCar(car);
+                var isAdded = await _carService.UpdateCarById(Car.Id, car);
                 if (!isAdded)
                 {
                     MessageBox.Show(
-                        "Error when trying to add new car",
+                        "Error when trying to update this car",
                         "Unexpected error",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error
@@ -255,7 +266,7 @@ namespace CarManagement.Dialogs
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Error when trying to add new car",
+                    "Error when trying to update this car",
                     "Unexpected error",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
@@ -267,23 +278,6 @@ namespace CarManagement.Dialogs
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogHost.CloseDialogCommand.Execute(false, this);
-        }
-
-        private void ChooseImageButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Mở hộp thoại chọn file
-            var openFileDialog = new OpenFileDialog
-            {
-                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp",
-                Title = "Choose a Car Image",
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                // Hiển thị hình ảnh đã chọn
-                CarImagePreview.Source = new BitmapImage(new Uri(openFileDialog.FileName));
-                CarImagePreview.Visibility = Visibility.Visible;
-            }
         }
 
         private void PickColorButton_Click(object sender, RoutedEventArgs e)
@@ -314,6 +308,22 @@ namespace CarManagement.Dialogs
                 var selectedColor = colorDialog.Color;
                 SelectedColorHex =
                     $"#{selectedColor.A:X2}{selectedColor.R:X2}{selectedColor.G:X2}{selectedColor.B:X2}";
+            }
+        }
+
+        private void ChooseImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp",
+                Title = "Choose a Car Image",
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                // Hiển thị hình ảnh đã chọn
+                CarImagePreview.Source = new BitmapImage(new Uri(openFileDialog.FileName));
+                CarImagePreview.Visibility = Visibility.Visible;
             }
         }
     }

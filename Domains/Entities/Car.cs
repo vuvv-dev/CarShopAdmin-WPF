@@ -21,9 +21,9 @@ public sealed class Car
     public int StorageAmount { get; set; }
 
     //Ref
-    public int BranchId { get; set; }
-    public int StatusId { get; set; }
-    public int SampleId { get; set; }
+    public int CarBranchId { get; set; }
+    public int CarStatusId { get; set; }
+    public int CarSampleId { get; set; }
 
     //navigation property
     public CarBranch CarBranch { get; set; }

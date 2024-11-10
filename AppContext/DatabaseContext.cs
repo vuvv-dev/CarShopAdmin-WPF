@@ -73,5 +73,28 @@ public class DatabaseContext : DbContext
                 }
             );
         });
+
+        modelBuilder
+            .Entity<Car>()
+            .HasOne(car => car.CarBranch)
+            .WithMany(branch => branch.Cars)
+            .HasForeignKey(car => car.CarBranchId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Configuring foreign key for Car -> CarStatus
+        modelBuilder
+            .Entity<Car>()
+            .HasOne(car => car.CarStatus)
+            .WithMany(status => status.Cars)
+            .HasForeignKey(car => car.CarStatusId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Configuring foreign key for Car -> CarSample
+        modelBuilder
+            .Entity<Car>()
+            .HasOne(car => car.CarSample)
+            .WithMany(sample => sample.Cars)
+            .HasForeignKey(car => car.CarSampleId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

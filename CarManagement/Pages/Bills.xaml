@@ -4,11 +4,146 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CarManagement.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="1000"
+      d:DataContext="{d:DesignInstance Type=local:Bills}"
       Title="Bills">
 
-    <Grid>
-        
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Row for the title and buttons -->
+            <RowDefinition Height="*"/>
+            <!-- Row for the bill list -->
+        </Grid.RowDefinitions>
+
+        <!-- Title and Buttons in the First Row -->
+        <StackPanel Margin="10">
+            <!-- Title and Buttons in a Border with Grid -->
+            <Border BorderThickness="1" Padding="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="37*"/>
+                        <ColumnDefinition Width="432*"/>
+                        <!-- Column for Title -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Column for Buttons -->
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Title -->
+                    <TextBlock Text="Manage Bill" FontSize="20" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+                    <!-- Action Buttons for Bill List, aligned to the right -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="2">
+                        <TextBox
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        x:Name="SearchTextBox" Width="118" TextChanged="SearchTextBox_TextChanged">
+                            <materialDesign:HintAssist.Hint>
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    Margin="-2 0 0 0">
+                                    <materialDesign:PackIcon
+                                    Kind="Search" />
+                                    <TextBlock>
+                                        Search
+                                    </TextBlock>
+                                </StackPanel>
+                            </materialDesign:HintAssist.Hint>
+                        </TextBox>
+                        <Button x:Name="AddButton" Padding="10,5" Margin="10,0" Click="AddButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Plus" Width="20" Height="20" Margin="0,0,5,0"/>
+                                <TextBlock Text="Add new bill" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </StackPanel>
+
+        <!-- Bill List in the Second Row -->
+        <GroupBox Grid.Row="1" Header="Bill List" Style="{StaticResource MaterialDesignGroupBox}" Margin="10,20,10,0">
+            <DataGrid x:Name="BillDataGrid" ItemsSource="{Binding BillList, Mode=TwoWay}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" Margin="0,10,0,10">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Bill ID" Binding="{Binding Id, StringFormat='#ID-{0}'}" Width="80">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Customer Name" Binding="{Binding Customer.Name}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Total Amount" Binding="{Binding TotalPrice}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Date" Binding="{Binding UpdateDate}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Status" Binding="{Binding BillStatus.BillStatusName}" Width="100">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Car Name" Binding="{Binding Car.CarName}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTemplateColumn Header="Action" Width="200">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Edit Button -->
+                                    <Button x:Name="EditButton" Padding="10,5" Margin="10,0" Click="EditButton_Click" Tag="{Binding}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Edit" Width="20" Height="20" Margin="0,0,0,0"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <!-- Delete Button -->
+                                    <Button x:Name="DeleteButton" Padding="10,5" Background="Red" BorderBrush="Red" Margin="10,0" Click="DeleteButton_Click" Tag="{Binding}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Delete" Width="20" Height="20" Margin="0,0,0,0"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <!-- View Button -->
+                                    <Button x:Name="ViewButton" Padding="10,5" Background="Green" BorderBrush="Green" Margin="10,0" Click="ViewButton_Click" Tag="{Binding}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="EyeOutline" Width="20" Height="20" Margin="0,0,0,0"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
     </Grid>
 </Page>

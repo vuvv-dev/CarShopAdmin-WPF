@@ -12,7 +12,7 @@ public sealed class Bill
     public int CustomerId { get; set; }
     public int BillStatusId { get; set; }
     public int CarId { get; set; }
-    public Decimal TotalPrice { get; set; }
+    public Double TotalPrice { get; set; }
     public DateTime CreateDate { get; set; }
 
     public DateTime UpdateDate { get; set; }

@@ -15,24 +15,45 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BusinessLayer.Services;
-using CarManagement.Dialogs;
 using Domains.Entities;
 using MaterialDesignThemes.Wpf;
 
-namespace CarManagement.Pages
+namespace CarManagement.Dialogs
 {
     /// <summary>
-    /// Interaction logic for Cars.xaml
+    /// Interaction logic for SelectCarDialog.xaml
     /// </summary>
-    public partial class Cars : Page, INotifyPropertyChanged
+    public partial class SelectCarDialog : UserControl, INotifyPropertyChanged
     {
         private readonly CarBranchServices _carBranchServices;
         private readonly CarService _carService;
         private ObservableCollection<CarBranch> _carBrands;
         private ObservableCollection<Car> _carModels;
         private Border _selectedBorder = null;
+        private Customer _customer;
+        private Car _selectedCar;
+
+        public Car SelectedCar
+        {
+            get => _selectedCar;
+            set
+            {
+                _selectedCar = value;
+                OnPropertyChanged(nameof(SelectedCar));
+            }
+        }
 
         private string _selectedBrandName = "None";
+
+        public Customer Customer
+        {
+            get => _customer;
+            set
+            {
+                _customer = value;
+                OnPropertyChanged(nameof(Customer));
+            }
+        }
 
         public string SelectedBrandName
         {
@@ -69,8 +90,9 @@ namespace CarManagement.Pages
         protected void OnPropertyChanged(string name) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        public Cars()
+        public SelectCarDialog(Customer customer)
         {
+            Customer = customer;
             _carBranchServices = new CarBranchServices();
             _carService = new CarService();
             InitializeComponent();
@@ -96,79 +118,6 @@ namespace CarManagement.Pages
         private async void LoadCars()
         {
             CarModels = new ObservableCollection<Car>(await _carService.GetAllCar());
-        }
-
-        private async void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new AddNewCarDialog();
-            var result = await DialogHost.Show(dialog, "RootDialog");
-            if (result != null && (bool)result)
-            {
-                var newCar = await _carService.GetLastedCar();
-                CarModels.Add(newCar);
-            }
-        }
-
-        private async void EditButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button editButton && editButton.Tag is Car carToEdit)
-            {
-                var dialog = new UpdateCarDialog(carToEdit);
-                var result = await DialogHost.Show(dialog, "RootDialog");
-
-                if (result != null && (bool)result)
-                {
-                    LoadCars();
-                }
-            }
-        }
-
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button deleteButton && deleteButton.Tag is Car carToDelete)
-            {
-                var result = MessageBox.Show(
-                    $"Are you sure you want to delete {carToDelete.CarName}?",
-                    "Confirm Delete",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning
-                );
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    var deleteResult = _carService.DeleteCarById(carToDelete.Id).Result;
-                    if (!deleteResult)
-                    {
-                        MessageBox.Show(
-                            "Failed to delete car!",
-                            "Error",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error
-                        );
-                    }
-                    CarModels.Remove(carToDelete);
-                }
-            }
-        }
-
-        private void ReloadButton_Click(object sender, RoutedEventArgs e)
-        {
-            LoadCars();
-        }
-
-        private void Branch_Click(object sender, RoutedEventArgs e)
-        {
-            CarBranchs carBranchs = new CarBranchs();
-
-            if (NavigationService != null)
-            {
-                NavigationService.Navigate(carBranchs);
-            }
-            else
-            {
-                var window = new Window() { Content = new CarBranchs() };
-                window.Show();
-            }
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -239,6 +188,23 @@ namespace CarManagement.Pages
         {
             SelectedBrandName = "None";
             LoadCars();
+        }
+
+        private async void SelectButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button selectButton && selectButton.Tag is Car car)
+            {
+                if (car != null)
+                {
+                    SelectedCar = car;
+                    DialogHost.CloseDialogCommand.Execute(true, this);
+                }
+            }
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogHost.CloseDialogCommand.Execute(false, this);
         }
     }
 }

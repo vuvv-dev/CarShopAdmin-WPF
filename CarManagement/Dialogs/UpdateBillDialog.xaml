@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="CarManagement.Dialogs.UpdateBillDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CarManagement.Dialogs"
+             d:DataContext="{d:DesignInstance Type=local:UpdateBillDialog}"
+             mc:Ignorable="d" 
+             >
+    <StackPanel Margin="16">
+    <TextBlock x:Name="BillIdTextBlock" Margin="0,0,0,5"/>
+        <TextBlock Text="Payment Status" Margin="0,0,0,5"/>
+        <ComboBox x:Name="BillStatusComboBox"  Margin="0,0,0,10"
+            DisplayMemberPath="BillStatusName" SelectedValuePath="Id" 
+            ItemsSource="{Binding BillStatuses}"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="Cancel" Width="75" Margin="0,0,5,0"
+                Style="{DynamicResource MaterialDesignFlatButton}"
+                Click="CancelButton_Click"/>
+            <Button Content="Update" Width="102" Margin="0,0,0,0" 
+                Style="{DynamicResource MaterialDesignRaisedButton}"
+                Click="UpdateButton_Click"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

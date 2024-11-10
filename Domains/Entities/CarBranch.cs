@@ -13,6 +13,5 @@ public sealed class CarBranch
     public int Id { get; set; }
     public string BranchName { get; set; }
     public string BranchLogo { get; set; }
-
     public IEnumerable<Car> Cars { get; set; }
 }

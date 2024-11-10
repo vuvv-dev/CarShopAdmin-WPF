@@ -14,8 +14,8 @@ namespace CarManagement.Pages;
 public partial class CarBranchs : Page
 {
     private readonly CarBranchServices _carBranchServices;
-    private ObservableCollection<CarBranch> _allBranches;
-    public ObservableCollection<CarBranch> FilteredBranches { get; set; }
+    private ObservableCollection<CarBranch>? _allBranches;
+    public ObservableCollection<CarBranch>? FilteredBranches { get; set; }
 
     public CarBranchs()
     {
@@ -50,19 +50,6 @@ public partial class CarBranchs : Page
         );
         FilteredBranches = new ObservableCollection<CarBranch>(_allBranches);
         BranchListView.ItemsSource = FilteredBranches;
-    }
-
-    private List<CarBranch> GetBranches()
-    {
-        try
-        {
-            return _carBranchServices.GetAllCarBranches().ToList();
-        }
-        catch (Exception ex)
-        {
-            // Log the exception or handle it in some way
-            return new List<CarBranch>(); // Return an empty list
-        }
     }
 
     private async void EditCarBrand_Click(object sender, RoutedEventArgs e)
@@ -111,6 +98,29 @@ public partial class CarBranchs : Page
                     );
                 }
             }
+        }
+    }
+
+    private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        FilterBranches(SearchTextBox.Text);
+    }
+
+    private void FilterBranches(string searchText)
+    {
+        // Clear the filtered list and add only the branches that match the search
+        FilteredBranches?.Clear();
+
+        var filtered = _allBranches
+            ?.Where(b =>
+                string.IsNullOrEmpty(searchText)
+                || b.BranchName.Contains(searchText, StringComparison.OrdinalIgnoreCase)
+            )
+            .ToList();
+
+        foreach (var branch in filtered!)
+        {
+            FilteredBranches?.Add(branch);
         }
     }
 }

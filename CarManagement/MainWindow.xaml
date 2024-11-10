@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CarManagement"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="MainWindow" Height="650" Width="1140" WindowStartupLocation="CenterScreen"
+        Title="MainWindow" Height="650" Width="1210" WindowStartupLocation="CenterScreen"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -22,8 +22,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <materialDesign:PackIcon Kind="CarHatchback" Height="25" Width="24" Margin="19,10,0,0" RenderTransformOrigin="-0.27,0.155" Foreground="#E5006DFF"/>
-            <Label Content="Admin" HorizontalAlignment="Left" Margin="48,8,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="#E5006DFF" FontSize="16"/>
+            <materialDesign:PackIcon Kind="CarHatchback" Height="25" Width="24" Margin="19,10,0,0" RenderTransformOrigin="-0.27,0.155" Foreground="#FF673AB7"/>
+            <Label Content="Admin" HorizontalAlignment="Left" Margin="48,8,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="#FF673AB7" FontSize="16"/>
 
             <ListBox Grid.Column="0" SelectionMode="Single" x:Name="sideBar" BorderThickness="0" Margin="0,50,0,0" SelectionChanged="sideBar_SelectionChanged">
                 <local:NavigationButton NavLink="/Pages/Home.xaml" Content="Home" FontWeight="Bold" Padding="20, 0, 0, 0" Width="146" Height="40" />
@@ -34,7 +34,7 @@
                 <local:NavigationButton  NavLink="/Pages/Bills.xaml" Content="Bills" Padding="20, 0, 0, 0" FontWeight="Bold" Width="146"  Height="40" />
             </ListBox>
 
-            <Frame Grid.Column="1" x:Name="navframe" Background="#e9ecef">
+            <Frame Grid.Column="1" x:Name="navframe" Background="#e9ecef" NavigationUIVisibility="Hidden" Navigated="navframe_Navigated">
             </Frame>
         </Grid>
     </materialDesign:DialogHost>

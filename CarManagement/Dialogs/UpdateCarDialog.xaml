@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="CarManagement.Dialogs.UpdateCarDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CarManagement.Dialogs"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DataContext="{d:DesignInstance Type=local:UpdateCarDialog}"
+             xmlns:local1="clr-namespace:CarManagement"
+             mc:Ignorable="d" 
+             >
+    <UserControl.Resources>
+        <local1:Base64ToImageConverter x:Key="Base64ToImageConverter"/>
+    </UserControl.Resources>
+    <StackPanel Margin="16">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                <TextBlock Text="Car Name" Margin="0,0,0,5"/>
+                <TextBox x:Name="CarNameTextBox" Text="{Binding Car.CarName, Mode=TwoWay}" 
+                         Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Car Code" Margin="0,0,0,5"/>
+                <TextBox x:Name="CarCodeTextBox" Text="{Binding Car.CarCode, Mode=TwoWay}" 
+                         Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Description" Margin="0,0,0,5"/>
+                <TextBox x:Name="CarDescriptionTextBox" Text="{Binding Car.CarDescription, Mode=TwoWay}" 
+                         Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Made In Date" Margin="0,0,0,5"/>
+                <DatePicker x:Name="MadeInDatePicker" SelectedDate="{Binding Car.MadeInDate, Mode=TwoWay}" 
+                            Style="{DynamicResource MaterialDesignDatePicker}" Margin="0,0,0,10" 
+                            SelectedDateFormat="Short"/>
+
+                <!-- Color selection with binding to update selected color -->
+                <Grid>
+                    <StackPanel VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox x:Name="ColorTextBox" Width="179" Height="30" Margin="0,0,10,0"
+                                     Style="{DynamicResource MaterialDesignTextBox}" 
+                                     Text="{Binding SelectedColorHex, Mode=TwoWay}"/>
+                            <Border x:Name="ColorDisplay" Width="30" Height="30" Margin="0,0,10,0" 
+                                    Background="{Binding SelectedColorHex, Mode=TwoWay}" BorderBrush="Black" BorderThickness="1"/>
+                        </StackPanel>
+                        <Button Width="135" Height="30" Margin="0,10,0,0" Click="PickColorButton_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Palette" Width="20" Height="20" Margin="0,0,4,0"/>
+                                <TextBlock Text="Pick a Color" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Text="Car Price" Margin="0,0,0,5"/>
+                <TextBox x:Name="CarPriceTextBox" Text="{Binding Car.CarPrice, Mode=TwoWay}" 
+                         Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Storage Amount" Margin="0,0,0,5"/>
+                <TextBox x:Name="StorageAmountTextBox" Text="{Binding Car.StorageAmount, Mode=TwoWay}" 
+                         Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                <TextBlock Text="Select Branch" Margin="0,10,0,5"/>
+                <ComboBox x:Name="BranchComboBox" Style="{DynamicResource MaterialDesignComboBox}" 
+                          Margin="0,0,0,10" DisplayMemberPath="BranchName" SelectedValuePath="Id" 
+                          ItemsSource="{Binding Branches}" SelectedValue="{Binding Car.CarBranchId, Mode=TwoWay}"/>
+
+                <TextBlock Text="Select Status" Margin="0,10,0,5"/>
+                <ComboBox x:Name="StatusComboBox" Style="{DynamicResource MaterialDesignComboBox}" 
+                          Margin="0,0,0,10" DisplayMemberPath="Status" SelectedValuePath="Id" 
+                          ItemsSource="{Binding Statuses}" SelectedValue="{Binding Car.CarStatusId, Mode=TwoWay}"/>
+
+                <TextBlock Text="Select Sample" Margin="0,10,0,5"/>
+                <ComboBox x:Name="SampleComboBox" Style="{DynamicResource MaterialDesignComboBox}" 
+                          Margin="0,0,0,10" DisplayMemberPath="SampleName" SelectedValuePath="Id" 
+                          ItemsSource="{Binding Samples}" SelectedValue="{Binding Car.CarSampleId, Mode=TwoWay}"/>
+
+                <TextBlock Text="Car Image" Margin="0,10,0,5"/>
+                <StackPanel Orientation="Vertical">
+                    <Button Content="Choose Image" Style="{DynamicResource MaterialDesignRaisedButton}" 
+                            Click="ChooseImageButton_Click"/>
+                    <Image x:Name="CarImagePreview" Source="{Binding Car.CarImage, Converter={StaticResource Base64ToImageConverter}}" Width="150" Height="100" Margin="0,0,0,10" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <!-- StackPanel for update and cancel buttons -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="Cancel" Width="75" Margin="0,0,5,0" 
+                    Style="{DynamicResource MaterialDesignFlatButton}" Click="CancelButton_Click"/>
+            <Button Content="Update" Width="85" Margin="0,0,0,0" 
+                    Style="{DynamicResource MaterialDesignRaisedButton}" Click="UpdateButton_Click"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

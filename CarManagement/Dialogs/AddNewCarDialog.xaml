@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:local="clr-namespace:CarManagement.Dialogs"
+             xmlns:local="clr-namespace:CarManagement.Dialogs" 
+             d:DataContext="{d:DesignInstance Type=local:AddNewCarDialog}"
              mc:Ignorable="d" Width="491"
              >
     <StackPanel Margin="16">
@@ -25,10 +26,58 @@
                 <TextBox x:Name="CarDescriptionTextBox" Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
 
                 <TextBlock Text="Made In Date" Margin="0,0,0,5"/>
-                <TextBox x:Name="MadeInDateTextBox" Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+                <DatePicker x:Name="MadeInDatePicker" 
+                    Style="{DynamicResource MaterialDesignDatePicker}" 
+                    Margin="0,0,0,10" 
+                    SelectedDateFormat="Short"/>
 
-                <TextBlock Text="Color" Margin="0,0,0,5"/>
-                <TextBox x:Name="ColorTextBox" Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
+
+                <Grid>
+                    <!-- Main StackPanel for vertical arrangement -->
+                    <StackPanel VerticalAlignment="Center">
+
+                        <!-- Color Input and Display -->
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <!-- Color TextBox (Left side) -->
+                            <TextBox x:Name="ColorTextBox" 
+                                Width="179" 
+                                Height="30" 
+                                Margin="0,0,10,0"
+                                Style="{DynamicResource MaterialDesignTextBox}" 
+                                Text="{Binding SelectedColorHex, Mode=TwoWay}" />
+
+                            <!-- Small Color Display Box (Middle) -->
+                            <Border x:Name="ColorDisplay" 
+                                Width="30" 
+                                Height="30" 
+                                Margin="0,0,10,0" 
+                                Background="{Binding SelectedColorHex}" 
+                                BorderBrush="Black" 
+                                BorderThickness="1"/>
+                        </StackPanel>
+
+                        <!-- Pick Color Button (Bottom) -->
+                        <Button Width="139" 
+                            Height="30" 
+                            Margin="0,10,0,0" 
+                            Click="PickColorButton_Click">
+                            <!-- StackPanel to arrange Text and Icon horizontally -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <!-- Icon for Pick Color -->
+                                <!-- Button Text -->
+                                <!-- Icon for Pick Color -->
+                                <materialDesign:PackIcon Kind="Palette" 
+                                    Width="20" 
+                                    Height="20" 
+                                                         Margin="0,0,5,0"
+                                    />
+                                <!-- Button Text -->
+                                <TextBlock Text="Pick a Color" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
 
                 <TextBlock Text="Car Price" Margin="0,0,0,5"/>
                 <TextBox x:Name="CarPriceTextBox" Style="{DynamicResource MaterialDesignTextBox}" Margin="0,0,0,10"/>
@@ -40,17 +89,17 @@
             <StackPanel Grid.Column="1" Margin="10,0,0,0">
                 <TextBlock Text="Select Branch" Margin="0,10,0,5"/>
                 <ComboBox x:Name="BranchComboBox" Style="{DynamicResource MaterialDesignComboBox}" Margin="0,0,0,10" 
-                          DisplayMemberPath="Name" SelectedValuePath="Id" 
+                          DisplayMemberPath="BranchName" SelectedValuePath="Id" 
                           ItemsSource="{Binding Branches}"/>
 
                 <TextBlock Text="Select Status" Margin="0,10,0,5"/>
                 <ComboBox x:Name="StatusComboBox" Style="{DynamicResource MaterialDesignComboBox}" Margin="0,0,0,10" 
-                          DisplayMemberPath="Name" SelectedValuePath="Id" 
+                          DisplayMemberPath="Status" SelectedValuePath="Id" 
                           ItemsSource="{Binding Statuses}"/>
 
                 <TextBlock Text="Select Sample" Margin="0,10,0,5"/>
                 <ComboBox x:Name="SampleComboBox" Style="{DynamicResource MaterialDesignComboBox}" Margin="0,0,0,10" 
-                          DisplayMemberPath="Name" SelectedValuePath="Id" 
+                          DisplayMemberPath="SampleName" SelectedValuePath="Id" 
                           ItemsSource="{Binding Samples}"/>
                 <TextBlock Text="Car Image" Margin="0,10,0,5"/>
                 <StackPanel Orientation="Vertical">
@@ -67,7 +116,7 @@
 
         <!-- StackPanel for buttons outside the grid -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-           
+
             <Button Content="Cancel" Width="75" Margin="0,0,5,0"
                     Style="{DynamicResource MaterialDesignFlatButton}"
                     Click="CancelButton_Click"/>
